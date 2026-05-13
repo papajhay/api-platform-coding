@@ -2,6 +2,9 @@ api_platform:
     title: Blog API
     description: 'REST API for managing users, posts, and comments in the blog platform.'
     version: 1.0.0
+    formats:
+        jsonld: ['application/ld+json']
+        json: ['application/json']
     defaults:
         stateless: true
         cache_headers:
