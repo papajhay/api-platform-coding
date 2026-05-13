@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ApiResource(
+    paginationItemsPerPage: 10,
     operations: [
         new Get(
             description: 'Retrieve a single comment with its related post and author.'
