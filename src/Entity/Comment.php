@@ -115,4 +115,9 @@ class Comment
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return substr((string) $this->content, 0, 40);
+    }
 }
