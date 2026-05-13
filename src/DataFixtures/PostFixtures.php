@@ -36,7 +36,6 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
             $post
                 ->setTitle($faker->sentence(6))
                 ->setContent($faker->paragraphs(3, true))
-                ->setSlug(sprintf('post-%d', $i))
                 ->setAuthor($author)
                 ->setCreatedAt($createdAt)
                 ->setUpdatedAt($createdAt);
