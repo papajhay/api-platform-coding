@@ -19,21 +19,33 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $users = [
-            ['email' => 'user1@example.com', 'roles' => ['ROLE_USER']],
-            ['email' => 'user2@example.com', 'roles' => ['ROLE_USER']],
-            ['email' => 'user3@example.com', 'roles' => ['ROLE_USER']],
-            ['email' => 'user4@example.com', 'roles' => ['ROLE_ADMIN']],
-            ['email' => 'user5@example.com', 'roles' => ['ROLE_SUPER_ADMIN']],
+        $faker = \Faker\Factory::create();
+
+        $usersData = [
+            ['roles' => ['ROLE_USER']],
+            ['roles' => ['ROLE_USER']],
+            ['roles' => ['ROLE_USER']],
+            ['roles' => ['ROLE_ADMIN']],
+            ['roles' => ['ROLE_SUPER_ADMIN']],
         ];
 
-        foreach ($users as $index => $data) {
+        foreach ($usersData as $index => $data) {
             $user = new User();
-            $user->setEmail($data['email']);
-            $user->setRoles($data['roles']);
+
+            // Email généré par Faker (unique)
+            $email = $faker->unique()->safeEmail();
+            $user->setEmail($email);
+
+            // Roles dynamiques pris depuis $usersData
+            $roles = $data['roles'] ?? ['ROLE_USER'];
+            $user->setRoles($roles);
+
+            // Mot de passe "password" hashé
             $user->setPassword($this->passwordHasher->hashPassword($user, 'password'));
 
             $manager->persist($user);
+
+            // Ajout d'une référence pour lier avec d'autres fixtures (user_1..user_5)
             $this->addReference(self::USER_REFERENCE_PREFIX . ($index + 1), $user);
         }
 

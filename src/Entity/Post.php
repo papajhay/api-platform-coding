@@ -4,12 +4,37 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post as PostOperation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ApiResource(
+    operations: [
+        new Get(
+            description: 'Retrieve a single blog post by its identifier, including author and comment relations.'
+        ),
+        new GetCollection(
+            description: 'List blog posts ordered by API Platform defaults. Use pagination and filters as needed.'
+        ),
+        new PostOperation(
+            description: 'Create a new blog post. Title, content, slug, and author are required.'
+        ),
+        new Patch(
+            description: 'Partially update an existing blog post. Only provided fields are modified.'
+        ),
+        new Delete(
+            description: 'Delete a blog post by its identifier.'
+        ),
+    ]
+)]
 class Post
 {
     #[ORM\Id]

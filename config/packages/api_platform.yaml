@@ -1,7 +1,15 @@
 api_platform:
-    title: Hello API Platform
+    title: Blog API
+    description: 'REST API for managing users, posts, and comments in the blog platform.'
     version: 1.0.0
     defaults:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+    openapi:
+        contact:
+            name: API Support
+            email: support@example.com
+        swagger_ui_extra_configuration:
+            docExpansion: list
+            displayRequestDuration: true

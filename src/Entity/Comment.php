@@ -4,10 +4,35 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post as PostOperation;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ApiResource(
+    operations: [
+        new Get(
+            description: 'Retrieve a single comment with its related post and author.'
+        ),
+        new GetCollection(
+            description: 'List comments across posts. Use pagination and filters where available.'
+        ),
+        new PostOperation(
+            description: 'Create a comment linked to a post and an author.'
+        ),
+        new Patch(
+            description: 'Partially update a comment payload, such as its content.'
+        ),
+        new Delete(
+            description: 'Delete a comment by its identifier.'
+        ),
+    ]
+)]
 class Comment
 {
     #[ORM\Id]
