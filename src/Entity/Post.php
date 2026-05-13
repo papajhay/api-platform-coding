@@ -22,6 +22,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity]
 #[Vich\Uploadable]
 #[ApiResource(
+    paginationItemsPerPage: 10,
     operations: [
         new Get(
             description: 'Retrieve a single blog post by its identifier, including author and comment relations.'
