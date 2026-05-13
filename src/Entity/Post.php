@@ -31,7 +31,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
             description: 'List blog posts ordered by API Platform defaults. Use pagination and filters as needed.'
         ),
         new PostOperation(
-            description: 'Create a new blog post. Title, content, slug, and author are required.'
+            description: 'Create a new blog post. Title, content, and author are required.'
         ),
         new Patch(
             description: 'Partially update an existing blog post. Only provided fields are modified.'
@@ -60,9 +60,6 @@ class Post
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
-
-    #[ORM\Column(length: 255, unique: true)]
-    private ?string $slug = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $createdAt;
@@ -120,18 +117,6 @@ class Post
     public function setContent(string $content): static
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): static
-    {
-        $this->slug = $slug;
 
         return $this;
     }
