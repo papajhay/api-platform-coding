@@ -5,17 +5,22 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post as PostOperation;
+use App\Controller\UploadPostImageAction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity]
+#[Vich\Uploadable]
 #[ApiResource(
     operations: [
         new Get(
@@ -32,6 +37,13 @@ use Doctrine\ORM\Mapping as ORM;
         ),
         new Delete(
             description: 'Delete a blog post by its identifier.'
+        ),
+        new PostOperation(
+            uriTemplate: '/posts/{id}/image',
+            controller: UploadPostImageAction::class,
+            deserialize: false,
+            inputFormats: ['multipart' => ['multipart/form-data']],
+            description: 'Upload or replace the image associated with a post using multipart/form-data (field name: "file").'
         ),
     ]
 )]
@@ -56,6 +68,13 @@ class Post
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $updatedAt;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageName = null;
+
+    #[ApiProperty(readable: false, writable: false)]
+    #[Vich\UploadableField(mapping: 'post_images', fileNameProperty: 'imageName')]
+    private ?File $imageFile = null;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
@@ -150,6 +169,42 @@ class Post
         $this->author = $author;
 
         return $this;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageName(?string $imageName): static
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile): static
+    {
+        $this->imageFile = $imageFile;
+        if (null !== $imageFile) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+
+        return $this;
+    }
+
+    public function getImageUrl(): ?string
+    {
+        if (!$this->imageName) {
+            return null;
+        }
+
+        return '/uploads/images/posts/' . $this->imageName;
     }
 
     /**
