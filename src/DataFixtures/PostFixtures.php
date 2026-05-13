@@ -13,16 +13,25 @@ use Faker\Factory;
 
 class PostFixtures extends Fixture implements DependentFixtureInterface
 {
+    public const POST_REFERENCE_PREFIX = 'post_';
+
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create();
 
         for ($i = 1; $i <= 20; ++$i) {
+
             $post = new Post();
-            $createdAt = \DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-12 months', 'now'));
+
+            $createdAt = \DateTimeImmutable::createFromMutable(
+                $faker->dateTimeBetween('-12 months', 'now')
+            );
 
             /** @var User $author */
-            $author = $this->getReference(UserFixtures::USER_REFERENCE_PREFIX . (($i - 1) % 5 + 1), User::class);
+            $author = $this->getReference(
+                UserFixtures::USER_REFERENCE_PREFIX . (($i - 1) % 5 + 1),
+                User::class
+            );
 
             $post
                 ->setTitle($faker->sentence(6))
@@ -33,6 +42,12 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
                 ->setUpdatedAt($createdAt);
 
             $manager->persist($post);
+
+            // IMPORTANT : ajouter la référence
+            $this->addReference(
+                self::POST_REFERENCE_PREFIX . $i,
+                $post
+            );
         }
 
         $manager->flush();
@@ -40,6 +55,8 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies(): array
     {
-        return [UserFixtures::class];
+        return [
+            UserFixtures::class,
+        ];
     }
 }
