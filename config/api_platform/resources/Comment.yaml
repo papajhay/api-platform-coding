@@ -4,11 +4,17 @@ resources:
         operations:
             ApiPlatform\Metadata\GetCollection:
                 filters: ['app.api_platform.filter.comment.search']
-            ApiPlatform\Metadata\Get: ~
-            ApiPlatform\Metadata\Post: ~
-            ApiPlatform\Metadata\Put: ~
-            ApiPlatform\Metadata\Patch: ~
-            ApiPlatform\Metadata\Delete: ~
+                security: "is_granted('IS_AUTHENTICATED_FULLY')"
+            ApiPlatform\Metadata\Get:
+                security: "is_granted('IS_AUTHENTICATED_FULLY')"
+            ApiPlatform\Metadata\Post:
+                security: "is_granted('IS_AUTHENTICATED_FULLY')"
+            ApiPlatform\Metadata\Put:
+                security: "is_granted('IS_AUTHENTICATED_FULLY')"
+            ApiPlatform\Metadata\Patch:
+                security: "is_granted('IS_AUTHENTICATED_FULLY')"
+            ApiPlatform\Metadata\Delete:
+                security: "is_granted('IS_AUTHENTICATED_FULLY')"
         normalizationContext:
             groups: ['comment:read']
         denormalizationContext:
