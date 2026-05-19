@@ -19,5 +19,17 @@ services:
     App\:
         resource: '../src/'
 
+    app.api_platform.filter.post.search:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments:
+            - { title: 'partial' }
+        tags: ['api_platform.filter']
+
+    app.api_platform.filter.comment.search:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments:
+            - { content: 'partial' }
+        tags: ['api_platform.filter']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

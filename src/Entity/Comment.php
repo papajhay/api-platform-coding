@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ApiFilter(SearchFilter::class, properties: ['content' => 'partial'])]
 class Comment
 {
     #[ORM\Id]
