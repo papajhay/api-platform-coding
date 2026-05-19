@@ -1,0 +1,14 @@
+resources:
+    App\Entity\User:
+        class: App\Entity\User
+        operations:
+            ApiPlatform\Metadata\GetCollection: ~
+            ApiPlatform\Metadata\Get: ~
+            ApiPlatform\Metadata\Post: ~
+            ApiPlatform\Metadata\Put: ~
+            ApiPlatform\Metadata\Patch: ~
+            ApiPlatform\Metadata\Delete: ~
+        normalizationContext:
+            groups: ['user:read']
+        denormalizationContext:
+            groups: ['user:write']
