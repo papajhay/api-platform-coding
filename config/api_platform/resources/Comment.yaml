@@ -1,0 +1,14 @@
+resources:
+    App\Entity\Comment:
+        class: App\Entity\Comment
+        operations:
+            ApiPlatform\Metadata\GetCollection: ~
+            ApiPlatform\Metadata\Get: ~
+            ApiPlatform\Metadata\Post: ~
+            ApiPlatform\Metadata\Put: ~
+            ApiPlatform\Metadata\Patch: ~
+            ApiPlatform\Metadata\Delete: ~
+        normalizationContext:
+            groups: ['comment:read']
+        denormalizationContext:
+            groups: ['comment:write']

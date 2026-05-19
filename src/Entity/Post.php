@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\ApiProperty;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post as PostOperation;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
-use App\Controller\UploadPostImageAction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -24,33 +17,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity]
 #[Vich\Uploadable]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
-#[ApiResource(
-    paginationItemsPerPage: 10,
-    operations: [
-        new Get(
-            description: 'Retrieve a single blog post by its identifier, including author and comment relations.'
-        ),
-        new GetCollection(
-            description: 'List blog posts ordered by API Platform defaults. Use pagination and filters as needed.'
-        ),
-        new PostOperation(
-            description: 'Create a new blog post. Title, content, and author are required.'
-        ),
-        new Patch(
-            description: 'Partially update an existing blog post. Only provided fields are modified.'
-        ),
-        new Delete(
-            description: 'Delete a blog post by its identifier.'
-        ),
-        new PostOperation(
-            uriTemplate: '/posts/{id}/image',
-            controller: UploadPostImageAction::class,
-            deserialize: false,
-            inputFormats: ['multipart' => ['multipart/form-data']],
-            description: 'Upload or replace the image associated with a post using multipart/form-data (field name: "file").'
-        ),
-    ]
-)]
 class Post
 {
     #[ORM\Id]

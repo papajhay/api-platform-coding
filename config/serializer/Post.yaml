@@ -1,0 +1,16 @@
+App\Entity\Post:
+    attributes:
+        id:
+            groups: ['post:read']
+        title:
+            groups: ['post:read', 'post:write']
+        content:
+            groups: ['post:read', 'post:write']
+        imageName:
+            groups: ['post:read']
+        imageUrl:
+            groups: ['post:read']
+        author:
+            groups: ['post:read', 'post:write']
+        comments:
+            groups: ['post:read']
