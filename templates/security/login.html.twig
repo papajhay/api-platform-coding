@@ -1,25 +1,65 @@
-{% extends 'base.html.twig' %}
+{% extends '@EasyAdmin/page/login_minimal.html.twig' %}
+{% trans_default_domain 'messages' %}
 
-{% block title %}Sign In{% endblock %}
+{% block body_class 'page-login' %}
+{% block page_title %}Admin Login{% endblock %}
 
-{% block body %}
-<div style="max-width: 420px; margin: 60px auto; padding: 24px; border: 1px solid #ddd; border-radius: 8px;">
-    <h1 style="margin-top: 0;">Admin Login</h1>
+{% block wrapper_wrapper %}
+    {{ include('@EasyAdmin/flash_messages.html.twig') }}
 
-    {% if error %}
-        <div style="color: #b00020; margin-bottom: 12px;">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <div class="login-wrapper">
+        <header class="main-header">
+            <div id="header-logo">
+                <div class="logo">{{ block('page_title') }}</div>
+            </div>
+        </header>
 
-    <form method="post">
-        <label for="username">Email</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" required autofocus style="display:block; width:100%; margin:8px 0 16px; padding:10px;" />
+        <section class="content">
+            {% if error %}
+                <div class="w-100 alert alert-danger rounded mb-3">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
 
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" required style="display:block; width:100%; margin:8px 0 16px; padding:10px;" />
+            {% block login_form_wrapper %}
+                <form method="post">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+                    {% block login_form_credentials_wrapper %}
+                        <div class="form-group">
+                            <label class="form-control-label required" for="username">Email</label>
+                            <div class="form-widget">
+                                <input
+                                    type="email"
+                                    id="username"
+                                    name="_username"
+                                    class="form-control"
+                                    value="{{ last_username }}"
+                                    required
+                                    autofocus
+                                    autocomplete="username"
+                                >
+                            </div>
+                        </div>
 
-        <button type="submit" style="padding:10px 16px;">Sign in</button>
-    </form>
-</div>
-{% endblock %}
+                        <div class="form-group">
+                            <label class="form-control-label required" for="password">Password</label>
+                            <div class="form-widget">
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="_password"
+                                    class="form-control"
+                                    required
+                                    autocomplete="current-password"
+                                >
+                            </div>
+                        </div>
+                    {% endblock login_form_credentials_wrapper %}
+
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+                </form>
+            {% endblock login_form_wrapper %}
+        </section>
+    </div>
+{% endblock wrapper_wrapper %}
