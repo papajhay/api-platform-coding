@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -16,7 +14,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity]
 #[Vich\Uploadable]
-#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
 class Post
 {
     #[ORM\Id]

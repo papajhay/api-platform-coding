@@ -2,7 +2,8 @@ resources:
     App\Entity\Comment:
         class: App\Entity\Comment
         operations:
-            ApiPlatform\Metadata\GetCollection: ~
+            ApiPlatform\Metadata\GetCollection:
+                filters: ['app.api_platform.filter.comment.search']
             ApiPlatform\Metadata\Get: ~
             ApiPlatform\Metadata\Post: ~
             ApiPlatform\Metadata\Put: ~
