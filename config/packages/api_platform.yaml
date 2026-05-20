@@ -16,6 +16,15 @@ api_platform:
         contact:
             name: API Support
             email: support@example.com
+
+            
         swagger_ui_extra_configuration:
             docExpansion: list
             displayRequestDuration: true
+
+ 
+    swagger:
+        api_keys:
+            JWT:
+                name: Authorization
+                type: header
