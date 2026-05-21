@@ -10,11 +10,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 final class PostCrudController extends AbstractCrudController
 {
@@ -45,9 +45,15 @@ final class PostCrudController extends AbstractCrudController
     {
         yield TextField::new('title');
         yield TextareaField::new('content');
+        yield Field::new('imageFile')
+            ->setFormType(VichImageType::class)
+            ->onlyOnForms();
+        yield ImageField::new('imageName')
+            ->setBasePath('/uploads/images/posts')
+            ->onlyOnIndex();
+        yield ImageField::new('imageName')
+            ->setBasePath('/uploads/images/posts')
+            ->onlyOnDetail();
         yield AssociationField::new('author');
-        //yield ImageField::new('imageName')
-        //    ->setBasePath('/uploads/images/posts')
-        //    ->onlyOnIndex();
     }
 }
