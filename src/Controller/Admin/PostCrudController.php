@@ -28,6 +28,7 @@ final class PostCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Post')
             ->setEntityLabelInPlural('Posts')
+            ->setPaginatorPageSize(10)
             ->setDefaultSort(['createdAt' => 'DESC']);
     }
 
