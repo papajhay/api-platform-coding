@@ -21,6 +21,7 @@ security:
         api:
             pattern: ^/api
             stateless: true
+            entry_point: jwt
             provider: app_user_provider
             access_denied_handler: App\Security\ApiAccessDeniedHandler
             json_login:
@@ -31,6 +32,8 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
             jwt: ~
+            refresh_jwt:
+                check_path: api_refresh_token
 
        
         main:
@@ -50,6 +53,7 @@ security:
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
         - { path: ^/api$, roles: PUBLIC_ACCESS }
         - { path: ^/api/login_check, roles: PUBLIC_ACCESS}
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
