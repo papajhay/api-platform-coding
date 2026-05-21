@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\Comment;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -21,7 +23,19 @@ final class CommentCrudController extends AbstractCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->setEntityLabelInSingular('Comment')->setEntityLabelInPlural('Comments');
+        return $crud
+            ->setEntityLabelInSingular('Comment')
+            ->setEntityLabelInPlural('Comments')
+            ->setDefaultSort(['createdAt' => 'DESC']);
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_EDIT, Action::INDEX)
+            ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            ->add(Crud::PAGE_EDIT, Action::DELETE);
     }
 
     public function configureFields(string $pageName): iterable
@@ -30,6 +44,5 @@ final class CommentCrudController extends AbstractCrudController
         yield TextareaField::new('content');
         yield AssociationField::new('post');
         yield AssociationField::new('author');
-        yield DateTimeField::new('createdAt')->hideOnForm();
     }
 }

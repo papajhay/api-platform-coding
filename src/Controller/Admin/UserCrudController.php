@@ -31,6 +31,5 @@ final class UserCrudController extends AbstractCrudController
         yield EmailField::new('email');
         yield ArrayField::new('roles');
         yield TextField::new('password')->onlyOnForms();
-        yield DateTimeField::new('createdAt')->hideOnForm();
     }
 }
