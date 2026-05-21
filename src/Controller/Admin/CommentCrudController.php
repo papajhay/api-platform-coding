@@ -26,6 +26,7 @@ final class CommentCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Comment')
             ->setEntityLabelInPlural('Comments')
+            ->setPaginatorPageSize(10)
             ->setDefaultSort(['createdAt' => 'DESC']);
     }
 
