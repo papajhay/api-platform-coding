@@ -9,6 +9,36 @@ resources:
                 security: "is_granted('IS_AUTHENTICATED_FULLY')"
             ApiPlatform\Metadata\Post:
                 security: "is_granted('ROLE_API_USER') or is_granted('ROLE_SUPER_ADMIN')"
+                controller: App\Controller\UploadPostImageAction
+                read: false
+                deserialize: false
+                inputFormats:
+                    multipart: ['multipart/form-data']
+                openapi:
+                    summary: Create a post with an uploaded image
+                    requestBody:
+                        required: true
+                        content:
+                            multipart/form-data:
+                                schema:
+                                    type: object
+                                    required:
+                                        - title
+                                        - content
+                                        - imageFile
+                                    properties:
+                                        title:
+                                            type: string
+                                            example: Spring launch
+                                        content:
+                                            type: string
+                                            example: Full post body goes here.
+                                        imageFile:
+                                            type: string
+                                            format: binary
+                                encoding:
+                                    imageFile:
+                                        contentType: image/*
             ApiPlatform\Metadata\Put:
                 security: "is_granted('ROLE_API_USER') or is_granted('ROLE_SUPER_ADMIN')"
             ApiPlatform\Metadata\Patch:
