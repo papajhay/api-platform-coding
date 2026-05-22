@@ -1,0 +1,55 @@
+{% block _Post_dropzone_image_widget %}
+    {% set current_image = image_uri|default('') is not empty ? (asset_helper is same as(true) ? asset(image_uri) : image_uri) : null %}
+
+    <div class="dropzone-image" data-dropzone-image>
+        <div class="dropzone-image__preview" data-dropzone-image-preview>
+            <img
+                class="dropzone-image__preview-image"
+                data-dropzone-image-preview-image
+                {% if current_image %}
+                    src="{{ current_image }}"
+                {% else %}
+                    hidden
+                {% endif %}
+                alt=""
+            >
+            <div class="dropzone-image__preview-placeholder" data-dropzone-image-placeholder {% if current_image %}hidden{% endif %}>
+                <span class="dropzone-image__preview-placeholder-title">Drop image here</span>
+                <span class="dropzone-image__preview-placeholder-subtitle">or click to browse</span>
+            </div>
+        </div>
+
+        <div class="dropzone-image__body">
+            <div class="dropzone-image__title">{{ label|default('Image') }}</div>
+            <div class="dropzone-image__help">
+                Drag and drop an image, or click the zone to open the file picker.
+            </div>
+            <div class="dropzone-image__filename" data-dropzone-image-filename>
+                {% if current_image %}
+                    Current image
+                {% else %}
+                    No file selected
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="dropzone-image__actions">
+            <span class="dropzone-image__action">Choose image</span>
+            <span class="dropzone-image__meta">PNG, JPG, WEBP, GIF</span>
+        </div>
+
+        {{ form_widget(form.file, {
+            attr: attr|merge({
+                class: (attr.class|default('') ~ ' dropzone-image__input')|trim,
+                'data-dropzone-image-input': 'true',
+                'data-dropzone-image-current-src': current_image ?? ''
+            })
+        }) }}
+    </div>
+
+    {% if form.delete is defined %}
+        <div class="dropzone-image__delete">
+            {{ form_row(form.delete) }}
+        </div>
+    {% endif %}
+{% endblock %}
