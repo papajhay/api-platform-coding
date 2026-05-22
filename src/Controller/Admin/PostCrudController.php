@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\Post;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -29,7 +31,18 @@ final class PostCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Post')
             ->setEntityLabelInPlural('Posts')
             ->setPaginatorPageSize(10)
-            ->setDefaultSort(['createdAt' => 'DESC']);
+            ->setDefaultSort(['createdAt' => 'DESC'])
+            ->setFormThemes([
+                'admin/form/dropzone_image_widget.html.twig',
+                '@EasyAdmin/crud/form_theme.html.twig',
+            ]);
+    }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addCssFile(Asset::new('admin/dropzone-image.css')->onlyOnForms())
+            ->addJsFile(Asset::new('admin/dropzone-image.js')->onlyOnForms());
     }
 
     public function configureActions(Actions $actions): Actions
@@ -47,6 +60,9 @@ final class PostCrudController extends AbstractCrudController
         yield TextareaField::new('content');
         yield Field::new('imageFile')
             ->setFormType(VichImageType::class)
+            ->setFormTypeOptions([
+                'block_name' => 'dropzone_image',
+            ])
             ->onlyOnForms();
         yield ImageField::new('imageName')
             ->setBasePath('/uploads/images/posts')
